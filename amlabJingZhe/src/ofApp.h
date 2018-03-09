@@ -31,10 +31,10 @@ public:
 
 	// global settings -----------------------
 	// FlowTools
-	int					flowWidth;
-	int					flowHeight;
-	int					drawWidth;
-	int					drawHeight;
+	int	flowWidth;
+	int	flowHeight;
+	int	drawWidth;
+	int	drawHeight;
 	
 	// seperate gui window -------------------
 	void setupGui();
@@ -51,15 +51,20 @@ public:
 	bool				didCamUpdate;
 	ftFbo				cameraFbo;
 	ofParameter<bool>	doFlipCamera;
-	
+	bool				showCameraSource;
+	void				drawCameraSource();
+
 	// Time -----------------------------------
 	float				lastTime;
 	float				deltaTime;
 	
 	// particles ------------------------------------
 	ftOpticalFlow		opticalFlow;
+	ftVelocityMask		velocityMask;
 	ftFluidSimulation	fluidSimulation;
 	ftParticleFlow		particleFlow;
+	bool				showParticles;
+	void				drawParticles();
 	
 	
 };
