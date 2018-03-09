@@ -4,39 +4,19 @@
 
 //========================================================================
 int main( ){
-	int mainW = 1024;
-	int mainH = 768;
-	int guiW = 800;
-	int guiH = 600;
+	
+	ofGLFWWindowSettings windowSettings;
+#ifdef USE_PROGRAMMABLE_GL
+	windowSettings.setGLVersion(4, 1);
+#endif
+	windowSettings.width = 1280;
+	windowSettings.height = 720;
+	windowSettings.windowMode = OF_WINDOW;
 
-	//	main window ===============
-	ofGLFWWindowSettings settings;
-	//	main window size
-	settings.width = mainW;
-	settings.height = mainH;
-	//	main window position
-	settings.setPosition(ofVec2f(guiW,0));
-	//	settings.resizable = true;
-	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
+	ofCreateWindow(windowSettings);
 	
-	//	gui window size
-	settings.width = guiW;
-	settings.height = guiH;
-	//	gui window position
-	settings.setPosition(ofVec2f(0,0));
-	settings.resizable = false;
-	// uncomment next line to share main's OpenGL resources with gui
-	//settings.shareContextWith = mainWindow;
-	shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);
-	guiWindow->setVerticalSync(false);
+	ofRunApp(new ofApp());
 	
-	shared_ptr<ofApp> mainApp(new ofApp);
-	//	self custome function setupGui
-	mainApp->setupGui();
-	//	self make function drawGui
-	ofAddListener(guiWindow->events().draw,mainApp.get(),&ofApp::drawGui);
-	
-	ofRunApp(mainWindow, mainApp);
-	ofRunMainLoop();
+
 	
 }
