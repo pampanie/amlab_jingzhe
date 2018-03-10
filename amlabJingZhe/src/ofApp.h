@@ -69,14 +69,11 @@ public:
 	ftParticleFlow		particleFlow;
 	ftVelocitySpheres	velocityDots;
 	
-	// multi particleFlow
-	vector<ftParticleFlow> 		particleFlowVector;
-	
 	ofImage				flowToolsLogoImage;
 	bool				showLogo;
 	
 	// MouseDraw
-	ftDrawMouseForces	mouseForces;
+//	ftDrawMouseForces	mouseForces;
 	
 	// Visualisations
 	ofParameterGroup	visualizeParameters;
@@ -86,18 +83,18 @@ public:
 	ftPressureField		pressureField;
 	ftVTField			velocityTemperatureField;
 	
-	ofParameter<bool>	showScalar;
-	ofParameter<bool>	showField;
-	ofParameter<float>	displayScalarScale;
-	void				setDisplayScalarScale(float& _value) { displayScalar.setScale(_value); }
-	ofParameter<float>	velocityFieldScale;
-	void				setVelocityFieldScale(float& _value) { velocityField.setVelocityScale(_value); velocityTemperatureField.setVelocityScale(_value); }
-	ofParameter<float>	temperatureFieldScale;
-	void				setTemperatureFieldScale(float& _value) { temperatureField.setTemperatureScale(_value); velocityTemperatureField.setTemperatureScale(_value); }
-	ofParameter<float>	pressureFieldScale;
-	void				setPressureFieldScale(float& _value) { pressureField.setPressureScale(_value); }
-	ofParameter<bool>	velocityLineSmooth;
-	void				setVelocityLineSmooth(bool& _value) { velocityField.setLineSmooth(_value); velocityTemperatureField.setLineSmooth(_value);  }
+//	ofParameter<bool>	showScalar;
+//	ofParameter<bool>	showField;
+//	ofParameter<float>	displayScalarScale;
+//	void				setDisplayScalarScale(float& _value) { displayScalar.setScale(_value); }
+//	ofParameter<float>	velocityFieldScale;
+//	void				setVelocityFieldScale(float& _value) { velocityField.setVelocityScale(_value); velocityTemperatureField.setVelocityScale(_value); }
+//	ofParameter<float>	temperatureFieldScale;
+//	void				setTemperatureFieldScale(float& _value) { temperatureField.setTemperatureScale(_value); velocityTemperatureField.setTemperatureScale(_value); }
+//	ofParameter<float>	pressureFieldScale;
+//	void				setPressureFieldScale(float& _value) { pressureField.setPressureScale(_value); }
+//	ofParameter<bool>	velocityLineSmooth;
+//	void				setVelocityLineSmooth(bool& _value) { velocityField.setLineSmooth(_value); velocityTemperatureField.setLineSmooth(_value);  }
 	
 	// GUI
 	ofxPanel			gui;

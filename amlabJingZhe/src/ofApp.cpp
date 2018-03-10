@@ -9,6 +9,9 @@ void ofApp::setup(){
 	ofSetLogLevel(OF_LOG_NOTICE);
 	
 	// setup render size
+//	drawWidth = 1920;
+//	drawHeight = 1080;
+//
 	drawWidth = 1280;
 	drawHeight = 720;
 	// process all but the density on 16th resolution
@@ -21,9 +24,10 @@ void ofApp::setup(){
 	
 	// FLUID & PARTICLES
 	fluidSimulation.setup(flowWidth, flowHeight, drawWidth, drawHeight);
+	
 	particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
-	flowToolsLogoImage.load("tupian1.png");
+	flowToolsLogoImage.load("tupian.png");
 	fluidSimulation.addObstacle(flowToolsLogoImage.getTexture());
 	showLogo = true;
 	
@@ -40,9 +44,9 @@ void ofApp::setup(){
 //	mouseForces.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
 	// CAMERA
-	simpleCam.setup(640, 480, true);
+	simpleCam.setup(640, 360, true);
 	didCamUpdate = false;
-	cameraFbo.allocate(640, 480);
+	cameraFbo.allocate(640, 360);
 	cameraFbo.black();
 	
 	// GUI
@@ -199,32 +203,6 @@ void ofApp::update(){
 	fluidSimulation.addDensity(velocityMask.getColorMask());
 	fluidSimulation.addTemperature(velocityMask.getLuminanceMask());
 	
-	mouseForces.update(deltaTime);
-	
-//	for (int i=0; i<mouseForces.getNumForces(); i++) {
-//		if (mouseForces.didChange(i)) {
-//			switch (mouseForces.getType(i)) {
-//				case FT_DENSITY:
-//					fluidSimulation.addDensity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-//					break;
-//				case FT_VELOCITY:
-//					fluidSimulation.addVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-//					particleFlow.addFlowVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-//					break;
-//				case FT_TEMPERATURE:
-//					fluidSimulation.addTemperature(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-//					break;
-//				case FT_PRESSURE:
-//					fluidSimulation.addPressure(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-//					break;
-//				case FT_OBSTACLE:
-//					fluidSimulation.addTempObstacle(mouseForces.getTextureReference(i));
-//				default:
-//					break;
-//			}
-//		}
-//	}
-	
 	fluidSimulation.update();
 	
 	if (particleFlow.isActive()) {
@@ -236,6 +214,34 @@ void ofApp::update(){
 		particleFlow.setObstacle(fluidSimulation.getObstacle());
 	}
 	particleFlow.update();
+
+	
+//	backup
+//	mouseForces.update(deltaTime);
+
+	//	for (int i=0; i<mouseForces.getNumForces(); i++) {
+	//		if (mouseForces.didChange(i)) {
+	//			switch (mouseForces.getType(i)) {
+	//				case FT_DENSITY:
+	//					fluidSimulation.addDensity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+	//					break;
+	//				case FT_VELOCITY:
+	//					fluidSimulation.addVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+	//					particleFlow.addFlowVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+	//					break;
+	//				case FT_TEMPERATURE:
+	//					fluidSimulation.addTemperature(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+	//					break;
+	//				case FT_PRESSURE:
+	//					fluidSimulation.addPressure(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+	//					break;
+	//				case FT_OBSTACLE:
+	//					fluidSimulation.addTempObstacle(mouseForces.getTextureReference(i));
+	//				default:
+	//					break;
+	//			}
+	//		}
+	//	}
 	
 }
 //--------------------------------------------------------------
@@ -270,7 +276,7 @@ void ofApp::keyPressed(int key){
 		case 'R':
 			fluidSimulation.reset();
 			fluidSimulation.addObstacle(flowToolsLogoImage.getTexture());
-			mouseForces.reset();
+//			mouseForces.reset();
 			break;
 			
 		default: break;
