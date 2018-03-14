@@ -8,6 +8,7 @@
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
 #include "ofxCv.h"
+#include "MyFlowTools.h"
 
 using namespace flowTools;
 
@@ -48,6 +49,8 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
+	
+	MyFlowTools		myFlowTools1;
 	
 	
 	// Kinect 1

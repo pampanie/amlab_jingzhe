@@ -8,6 +8,25 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
 	ofSetLogLevel(OF_LOG_NOTICE);
 	
+	
+	// test for make my own flow tools class ================= TODO
+	
+	
+	myFlowTools1.setup(800, 600, 2);
+	cout << myFlowTools1.getDrawWidth() << endl;
+	cout << myFlowTools1.getDrawHeight() << endl;
+	cout << myFlowTools1.getFlowWidth() << endl;
+	cout << myFlowTools1.getFlowHeight() << endl;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//setup kinect 1
 	// enable depth->video image calibration
 	kinect1.setRegistration(true);

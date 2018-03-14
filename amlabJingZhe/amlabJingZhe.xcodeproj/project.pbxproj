@@ -543,7 +543,7 @@
 		7FE1F9519E979B806AC13B6A /* videostab.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = videostab.hpp; path = ../../../../../../../../../Applications/of_v0.9.8_osx_release/addons/ofxOpenCv/libs/opencv/include/opencv2/videostab/videostab.hpp; sourceTree = SOURCE_ROOT; };
 		8007C7463B81B32A5E209B38 /* ofxBase3DVideo.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBase3DVideo.h; path = ../../../../../../../../../Applications/of_v0.9.8_osx_release/addons/ofxKinect/src/ofxBase3DVideo.h; sourceTree = SOURCE_ROOT; };
 		80A6967120535F2300AED974 /* MyFlowTools.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MyFlowTools.cpp; sourceTree = "<group>"; };
-		80A6967220535F2300AED974 /* MyFlowTools.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MyFlowTools.hpp; sourceTree = "<group>"; };
+		80A6967220535F2300AED974 /* MyFlowTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFlowTools.h; sourceTree = "<group>"; };
 		8102A5B247FFAEB5627BEF2A /* cvaux.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cvaux.hpp; path = ../../../../../../../../../Applications/of_v0.9.8_osx_release/addons/ofxOpenCv/libs/opencv/include/opencv/cvaux.hpp; sourceTree = SOURCE_ROOT; };
 		814B4E3CE437E6DB03CBA1ED /* opencv.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = opencv.hpp; path = ../../../../../../../../../Applications/of_v0.9.8_osx_release/addons/ofxOpenCv/libs/opencv/include/opencv2/opencv.hpp; sourceTree = SOURCE_ROOT; };
 		819DFA926804BA6BE8419056 /* ofxRtMidiIn.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxRtMidiIn.cpp; path = ../../../../../../../../../Applications/of_v0.9.8_osx_release/addons/ofxMidi/src/desktop/ofxRtMidiIn.cpp; sourceTree = SOURCE_ROOT; };
@@ -2501,7 +2501,7 @@
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				80A6967120535F2300AED974 /* MyFlowTools.cpp */,
-				80A6967220535F2300AED974 /* MyFlowTools.hpp */,
+				80A6967220535F2300AED974 /* MyFlowTools.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
