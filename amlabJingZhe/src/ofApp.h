@@ -47,6 +47,8 @@ public:
 	void gotMessage(ofMessage msg);
 	
 	
+	
+
 	// Camera
 	ofVideoGrabber		simpleCam;
 	bool				didCamUpdate;
@@ -67,7 +69,7 @@ public:
 	ftVelocityMask		velocityMask;
 	ftFluidSimulation	fluidSimulation;
 	ftParticleFlow		particleFlow;
-	ftVelocitySpheres	velocityDots;
+//	ftVelocitySpheres	velocityDots;
 	
 	ofImage				flowToolsLogoImage;
 	bool				showLogo;
@@ -118,9 +120,10 @@ public:
 	
 	// syphon
 	ofxSyphonServer 	mainOutputSyphonServer;
-	ofTexture 			syphonTex;
-	ofPixels 			syphonPixels;
+//	ofTexture 			syphonTex;
+//	ofPixels 			syphonPixels;
 	ofFbo				syphonFbo;
+	ofxSyphonClient 	syphonClient;
 
 	// midi
 	ofxMidiIn 			midiIn;
@@ -129,8 +132,26 @@ public:
 	ofxMidiMessage 		midiMessage;
 
 	
+	// camera vbo for fluid
+	ofFbo				camFboForFluid;
+	
+	// video for making fluid
+	ofFbo				videoFboForFluid;
+	// fbo for optical flow 
+	ofFbo				fboForFluid;
+	int					fboForFluidW;
+	int					fboForFluidH;
+	
+	// obstacle fbo
+	ofFbo				obstacleFbo;
+	int					obstacleFboWidth;
+	int					obstacleFboHeight;
 	
 	
+	// local video player
+	ofVideoPlayer 		videoPlayer;
+	
+
 	
 	void				drawComposite()			{ drawComposite(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	void				drawComposite(int _x, int _y, int _width, int _height);

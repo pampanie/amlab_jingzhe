@@ -14,6 +14,9 @@ void ofApp::setup(){
 //
 	drawWidth = 1280;
 	drawHeight = 720;
+	fboForFluidW = 640;
+	fboForFluidH = 360;
+	
 	// process all but the density on 16th resolution
 	flowWidth = drawWidth / 4;
 	flowHeight = drawHeight / 4;
@@ -24,14 +27,17 @@ void ofApp::setup(){
 	
 	// FLUID & PARTICLES
 	fluidSimulation.setup(flowWidth, flowHeight, drawWidth, drawHeight);
-	
+//	velocityDots.setup(flowWidth / 4, flowHeight / 4);
 	particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
+	// image obstacle
 	flowToolsLogoImage.load("tupian.png");
-	fluidSimulation.addObstacle(flowToolsLogoImage.getTexture());
+//	fluidSimulation.addObstacle(flowToolsLogoImage.getTexture());
 	showLogo = true;
 	
-	velocityDots.setup(flowWidth / 4, flowHeight / 4);
+	// fbo obstacle
+	obstacleFboWidth = drawWidth;
+	obstacleFboHeight = drawHeight;
 	
 	// VISUALIZATION
 //	displayScalar.setup(flowWidth, flowHeight);
@@ -44,10 +50,20 @@ void ofApp::setup(){
 //	mouseForces.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
 	// CAMERA
-	simpleCam.setup(640, 360, true);
-	didCamUpdate = false;
-	cameraFbo.allocate(640, 360);
-	cameraFbo.black();
+//	simpleCam.setup(640, 480, true);
+//	didCamUpdate = false;
+//	cameraFbo.allocate(640, 480);
+//	cameraFbo.black();
+	
+	// cameara fbo for fluid
+	camFboForFluid.allocate(640, 480);
+	
+	// video fbo for fuild
+	// fixed w h for test only ==============  TODO
+	videoFboForFluid.allocate(640,480);
+	fboForFluid.allocate(640, 480);
+	// obstacle fbo
+	obstacleFbo.allocate(drawWidth, drawHeight);
 	
 	// GUI
 	setupGui();
@@ -58,20 +74,26 @@ void ofApp::setup(){
 	syphonFbo.allocate(drawWidth,drawHeight,GL_RGBA);
 
 //	syphonPixels.allocate(drawWidth, drawHeight, OF_PIXELS_RGB);
-	syphonTex.allocate(syphonPixels);
+//	syphonTex.allocate(syphonPixels);
 	mainOutputSyphonServer.setName("A.M Lab -- Jing Zhe");
 
+	syphonClient.setup();
+	syphonClient.setServerName("Video");
+	
+	
 	
 	// midi
-	midiIn.listPorts(); // via instance
-	midiIn.openPort(0);
-	// add ofApp as a listener
-	midiIn.addListener(this);
+//	midiIn.listPorts(); // via instance
+//	midiIn.openPort(0);
+//	// add ofApp as a listener
+//	midiIn.addListener(this);
+//
+//	midiIn.ignoreTypes(false, false, false);
+//
+//	// print received messages to the console
+//	midiIn.setVerbose(true);
+//
 	
-	midiIn.ignoreTypes(false, false, false);
-	
-	// print received messages to the console
-	midiIn.setVerbose(true);
 	
 }
 
@@ -170,39 +192,82 @@ void ofApp::setupGui() {
 //--------------------------------------------------------------
 void ofApp::update(){
 	
+	
 	deltaTime = ofGetElapsedTimef() - lastTime;
 	lastTime = ofGetElapsedTimef();
-	
 	simpleCam.update();
+//
+//	if (simpleCam.isFrameNew()) {
+//		ofPushStyle();
+//		ofEnableBlendMode(OF_BLENDMODE_DISABLED);
+//		cameraFbo.begin();
+//
+//		if (doFlipCamera)
+//			simpleCam.draw(cameraFbo.getWidth(), 0, -cameraFbo.getWidth(), cameraFbo.getHeight());  // Flip Horizontal
+//		else
+//			simpleCam.draw(0, 0, cameraFbo.getWidth(), cameraFbo.getHeight());
+//		cameraFbo.end();
+//		ofPopStyle();
+//
+//		// set source from camera
+//		opticalFlow.setSource(cameraFbo.getTexture());
+//
+//
+//		// opticalFlow.update(deltaTime);
+//		// use internal deltatime instead
+//		opticalFlow.update();
+//
+//		velocityMask.setDensity(cameraFbo.getTexture());
+//		velocityMask.setVelocity(opticalFlow.getOpticalFlow());
+//		velocityMask.update();
+//	}
+//
 	
-	if (simpleCam.isFrameNew()) {
-		ofPushStyle();
-		ofEnableBlendMode(OF_BLENDMODE_DISABLED);
-		cameraFbo.begin();
-		
-		if (doFlipCamera)
-			simpleCam.draw(cameraFbo.getWidth(), 0, -cameraFbo.getWidth(), cameraFbo.getHeight());  // Flip Horizontal
-		else
-			simpleCam.draw(0, 0, cameraFbo.getWidth(), cameraFbo.getHeight());
-		cameraFbo.end();
-		ofPopStyle();
-		
-		opticalFlow.setSource(cameraFbo.getTexture());
-		
-		// opticalFlow.update(deltaTime);
-		// use internal deltatime instead
-		opticalFlow.update();
-		
-		velocityMask.setDensity(cameraFbo.getTexture());
-		velocityMask.setVelocity(opticalFlow.getOpticalFlow());
-		velocityMask.update();
-	}
+	
+	// animation/fbo for making fluid/particles
+//	fboForFluid.begin();
+//	ofSetColor(0, 200, 0);
+//	ofDrawRectangle(0, 0, 640, 20);
+//	fboForFluid.end();
+//
+//	opticalFlow.setSource(fboForFluid.getTexture());
+//	opticalFlow.update();
+//	velocityMask.setDensity(fboForFluid.getTexture());
+//	velocityMask.setVelocity(opticalFlow.getOpticalFlow());
+//	velocityMask.update();
 	
 	
+	
+	// set source from syphon client ===============================  TODO
+	fboForFluid.begin();
+	syphonClient.draw(0,0, 640, 360);
+	fboForFluid.end();
+	
+	opticalFlow.setSource(fboForFluid.getTexture());
+	opticalFlow.update();
+	velocityMask.setDensity(fboForFluid.getTexture());
+	velocityMask.setVelocity(opticalFlow.getOpticalFlow());
+	velocityMask.update();
+
+	
+	
+	
+	// obstacle fbo
+	obstacleFbo.begin();
+//	ofSetColor(255, 255, 255);
+//	ofDrawRectangle(100, 100, 600, 200);
+	
+//	syphonClient.draw(0,0);
+	obstacleFbo.end();
+	
+	
+	// fluid
 	fluidSimulation.addVelocity(opticalFlow.getOpticalFlowDecay());
 	fluidSimulation.addDensity(velocityMask.getColorMask());
 	fluidSimulation.addTemperature(velocityMask.getLuminanceMask());
-	
+	fluidSimulation.addObstacle(obstacleFbo.getTexture());
+
+
 	fluidSimulation.update();
 	
 	if (particleFlow.isActive()) {
@@ -215,6 +280,9 @@ void ofApp::update(){
 	}
 	particleFlow.update();
 
+	
+	
+	
 	
 //	backup
 //	mouseForces.update(deltaTime);
@@ -345,7 +413,12 @@ void ofApp::draw(){
 	mainOutputSyphonServer.publishTexture(&syphonFbo.getTexture());
 
 	drawGui();
-
+	
+	// test obstacle fbo
+//	obstacleFbo.draw(0, 0);
+	
+	// test syphon client
+//	syphonClient.draw(0,0);
 }
 
 //--------------------------------------------------------------
