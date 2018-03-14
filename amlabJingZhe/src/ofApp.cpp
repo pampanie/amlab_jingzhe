@@ -8,6 +8,32 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
 	ofSetLogLevel(OF_LOG_NOTICE);
 	
+	//setup kinect 1
+	// enable depth->video image calibration
+	kinect1.setRegistration(true);
+	
+	kinect1.init();
+	//kinect.init(true); // shows infrared instead of RGB video image
+	//kinect.init(false, false); // disable video image (faster fps)
+	
+	kinect1.open();		// opens first available kinect
+	//kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
+	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
+	
+	// print the intrinsic IR sensor values
+	if(kinect1.isConnected()) {
+		ofLogNotice() << "sensor-emitter dist: " << kinect1.getSensorEmitterDistance() << "cm";
+		ofLogNotice() << "sensor-camera dist:  " << kinect1.getSensorCameraDistance() << "cm";
+		ofLogNotice() << "zero plane pixel size: " << kinect1.getZeroPlanePixelSize() << "mm";
+		ofLogNotice() << "zero plane dist: " << kinect1.getZeroPlaneDistance() << "mm";
+	}
+	
+	nearThreshold = 245;
+	farThreshold = 213;
+	bThreshWithOpenCV = true;
+	
+	
+	
 	// setup render size
 //	drawWidth = 1920;
 //	drawHeight = 1080;
@@ -192,6 +218,37 @@ void ofApp::setupGui() {
 //--------------------------------------------------------------
 void ofApp::update(){
 	
+	kinect1.update();
+
+	if(kinect1.isFrameNew()) {
+		grayKinect1Image.setFromPixels(kinect1.getDepthPixels());
+		// we do two thresholds - one for the far plane and one for the near plane
+		// we then do a cvAnd to get the pixels which are a union of the two thresholds
+		if(bThreshWithOpenCV) {
+			grayThreshNear = grayKinect1Image;
+			grayThreshFar = grayKinect1Image;
+			grayThreshNear.threshold(nearThreshold, true);
+			grayThreshFar.threshold(farThreshold);
+			cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayKinect1Image.getCvImage(), NULL);
+		} else {
+			
+			// or we do it ourselves - show people how they can work with the pixels
+			ofPixels & pix = grayKinect1Image.getPixels();
+			int numPixels = pix.size();
+			for(int i = 0; i < numPixels; i++) {
+				if(pix[i] < nearThreshold && pix[i] > farThreshold) {
+					pix[i] = 255;
+				} else {
+					pix[i] = 0;
+				}
+			}
+		}
+		
+		grayKinect1Image.flagImageChanged();
+
+		
+		
+	};
 	
 	deltaTime = ofGetElapsedTimef() - lastTime;
 	lastTime = ofGetElapsedTimef();
@@ -256,8 +313,8 @@ void ofApp::update(){
 	obstacleFbo.begin();
 //	ofSetColor(255, 255, 255);
 //	ofDrawRectangle(100, 100, 600, 200);
-	
-//	syphonClient.draw(0,0);
+	grayKinect1Image.draw(0, 0, drawWidth,drawHeight);
+
 	obstacleFbo.end();
 	
 	
@@ -265,7 +322,9 @@ void ofApp::update(){
 	fluidSimulation.addVelocity(opticalFlow.getOpticalFlowDecay());
 	fluidSimulation.addDensity(velocityMask.getColorMask());
 	fluidSimulation.addTemperature(velocityMask.getLuminanceMask());
-	fluidSimulation.addObstacle(obstacleFbo.getTexture());
+//	fluidSimulation.addObstacle(obstacleFbo.getTexture());
+	// try to add temporary obstacle
+	fluidSimulation.addTempObstacle(obstacleFbo.getTexture());
 
 
 	fluidSimulation.update();
@@ -319,6 +378,9 @@ void ofApp::exit() {
 	// clean up
 	midiIn.closePort();
 	midiIn.removeListener(this);
+	
+	kinect1.setCameraTiltAngle(0); // zero the tilt on exit
+	kinect1.close();
 }
 
 //--------------------------------------------------------------
@@ -347,8 +409,46 @@ void ofApp::keyPressed(int key){
 //			mouseForces.reset();
 			break;
 			
+			
+		// control kinect1
+		case OF_KEY_UP:
+			angle++;
+			if(angle>30) angle=30;
+			kinect1.setCameraTiltAngle(angle);
+			break;
+			
+		case OF_KEY_DOWN:
+			angle--;
+			if(angle<-30) angle=-30;
+			kinect1.setCameraTiltAngle(angle);
+			break;
+		case '>':
+		case '.':
+			farThreshold ++;
+			if (farThreshold > 255) farThreshold = 255;
+			break;
+			
+		case '<':
+		case ',':
+			farThreshold --;
+			if (farThreshold < 0) farThreshold = 0;
+			break;
+			
+		case '+':
+		case '=':
+			nearThreshold ++;
+			if (nearThreshold > 255) nearThreshold = 255;
+			break;
+			
+		case '-':
+			nearThreshold --;
+			if (nearThreshold < 0) nearThreshold = 0;
+			break;
 		default: break;
 	}
+	
+	
+	
 }
 
 //--------------------------------------------------------------

@@ -5,6 +5,9 @@
 #include "ofxGui.h"
 #include "ofxFlowTools.h"
 #include "ofxSyphon.h"
+#include "ofxOpenCv.h"
+#include "ofxKinect.h"
+#include "ofxCv.h"
 
 using namespace flowTools;
 
@@ -47,8 +50,23 @@ public:
 	void gotMessage(ofMessage msg);
 	
 	
+	// Kinect 1
+	ofxKinect 		kinect1;
+	bool 			bThreshWithOpenCV;
+	bool			bDrawPointCloud;
 	
-
+	int 			nearThreshold;
+	int 			farThreshold;
+	
+	int 			angle;
+	
+	ofxCvGrayscaleImage grayKinect1Image; // grayscale depth image
+	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
+	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
+	
+	
+	
+	
 	// Camera
 	ofVideoGrabber		simpleCam;
 	bool				didCamUpdate;
@@ -137,7 +155,7 @@ public:
 	
 	// video for making fluid
 	ofFbo				videoFboForFluid;
-	// fbo for optical flow 
+	// fbo for optical flow
 	ofFbo				fboForFluid;
 	int					fboForFluidW;
 	int					fboForFluidH;
