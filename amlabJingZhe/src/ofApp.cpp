@@ -13,10 +13,10 @@ void ofApp::setup(){
 	
 	
 	myFlowTools1.setup(800, 600, 2);
-	cout << myFlowTools1.getDrawWidth() << endl;
-	cout << myFlowTools1.getDrawHeight() << endl;
-	cout << myFlowTools1.getFlowWidth() << endl;
-	cout << myFlowTools1.getFlowHeight() << endl;
+//	cout << myFlowTools1.getDrawWidth() << endl;
+//	cout << myFlowTools1.getDrawHeight() << endl;
+//	cout << myFlowTools1.getFlowWidth() << endl;
+//	cout << myFlowTools1.getFlowHeight() << endl;
 
 	
 	
@@ -156,7 +156,7 @@ void ofApp::setupGui() {
 	gui.add(doFlipCamera.set("flip camera", true));
 	gui.add(doDrawCamBackground.set("draw camera (C)", true));
 	gui.add(drawMode.set("draw mode", DRAW_COMPOSITE, DRAW_COMPOSITE, DRAW_MOUSE));
-//	gui.add(drawMode.set("draw mode", DRAW_COMPOSITE, DRAW_COMPOSITE,DRAW_COMPOSITE));
+
 	drawMode.addListener(this, &ofApp::drawModeSetName);
 	gui.add(drawName.set("MODE", "draw name"));
 	
@@ -189,47 +189,14 @@ void ofApp::setupGui() {
 	guiColorSwitch = 1 - guiColorSwitch;
 	gui.add(particleFlow.parameters);
 	
-//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-//	guiColorSwitch = 1 - guiColorSwitch;
-//	gui.add(mouseForces.leftButtonParameters);
-	
-//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-//	guiColorSwitch = 1 - guiColorSwitch;
-//	gui.add(mouseForces.rightButtonParameters);
-	
-//	visualizeParameters.setName("visualizers");
-//	visualizeParameters.add(showScalar.set("show scalar", true));
-//	visualizeParameters.add(showField.set("show field", true));
-//	visualizeParameters.add(displayScalarScale.set("scalar scale", 0.15, 0.05, 1.0));
-//	displayScalarScale.addListener(this, &ofApp::setDisplayScalarScale);
-//	visualizeParameters.add(velocityFieldScale.set("velocity scale", 0.1, 0.0, 0.5));
-//	velocityFieldScale.addListener(this, &ofApp::setVelocityFieldScale);
-//	visualizeParameters.add(temperatureFieldScale.set("temperature scale", 0.1, 0.0, 0.5));
-//	temperatureFieldScale.addListener(this, &ofApp::setTemperatureFieldScale);
-//	visualizeParameters.add(pressureFieldScale.set("pressure scale", 0.02, 0.0, 0.5));
-//	pressureFieldScale.addListener(this, &ofApp::setPressureFieldScale);
-//	visualizeParameters.add(velocityLineSmooth.set("line smooth", false));
-//	velocityLineSmooth.addListener(this, &ofApp::setVelocityLineSmooth);
-//
-//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-//	guiColorSwitch = 1 - guiColorSwitch;
-//	gui.add(visualizeParameters);
-	
-//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-//	guiColorSwitch = 1 - guiColorSwitch;
-//	gui.add(velocityDots.parameters);
-	
-	// if the settings file is not present the parameters will not be set during this setup
+
 	if (!ofFile("settings.xml"))
 		gui.saveToFile("settings.xml");
 	
 	gui.loadFromFile("settings.xml");
 	
 	gui.minimizeAll();
+	
 	toggleGuiDraw = true;
 	
 }
@@ -701,6 +668,46 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //======================================================
 //======================================================
+
+// within setupGui()
+
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.add(mouseForces.leftButtonParameters);
+
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.add(mouseForces.rightButtonParameters);
+
+//	visualizeParameters.setName("visualizers");
+//	visualizeParameters.add(showScalar.set("show scalar", true));
+//	visualizeParameters.add(showField.set("show field", true));
+//	visualizeParameters.add(displayScalarScale.set("scalar scale", 0.15, 0.05, 1.0));
+//	displayScalarScale.addListener(this, &ofApp::setDisplayScalarScale);
+//	visualizeParameters.add(velocityFieldScale.set("velocity scale", 0.1, 0.0, 0.5));
+//	velocityFieldScale.addListener(this, &ofApp::setVelocityFieldScale);
+//	visualizeParameters.add(temperatureFieldScale.set("temperature scale", 0.1, 0.0, 0.5));
+//	temperatureFieldScale.addListener(this, &ofApp::setTemperatureFieldScale);
+//	visualizeParameters.add(pressureFieldScale.set("pressure scale", 0.02, 0.0, 0.5));
+//	pressureFieldScale.addListener(this, &ofApp::setPressureFieldScale);
+//	visualizeParameters.add(velocityLineSmooth.set("line smooth", false));
+//	velocityLineSmooth.addListener(this, &ofApp::setVelocityLineSmooth);
+//
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.add(visualizeParameters);
+
+//	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+//	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+//	guiColorSwitch = 1 - guiColorSwitch;
+//	gui.add(velocityDots.parameters);
+
+// if the settings file is not present the parameters will not be set during this setup
+
+
 
 //--------------------------------------------------------------
 //void ofApp::drawFluidDensity(int _x, int _y, int _width, int _height) {

@@ -23,6 +23,8 @@ public:
 	void draw();
 	void exit();
 	
+	
+	void setParticleColor(ofColor _color);
 	void drawComposite(){
 		drawComposite(0,0,drawWidth,drawHeight);
 	};

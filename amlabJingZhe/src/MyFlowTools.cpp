@@ -117,7 +117,6 @@ int MyFlowTools::getFlowHeight(){
 	return flowHeight;
 }
 
-
 void MyFlowTools::drawComposite(int _x, int _y, int _width, int _height){
 	ofPushStyle();
 	
