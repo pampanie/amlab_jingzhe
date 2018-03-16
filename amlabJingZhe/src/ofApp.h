@@ -10,26 +10,27 @@
 #include "ofxCv.h"
 #include "MyFlowTools.h"
 
-using namespace flowTools;
-
-enum drawModeEnum{
-	DRAW_COMPOSITE = 0,
-//	DRAW_FLUID_DENSITY,
-	DRAW_PARTICLES,
-//	DRAW_VELDOTS,
-	DRAW_FLUID_FIELDS,
-//	DRAW_FLUID_VELOCITY,
-//	DRAW_FLUID_PRESSURE,
-//	DRAW_FLUID_TEMPERATURE,
-//	DRAW_FLUID_DIVERGENCE,
-//	DRAW_FLUID_VORTICITY,
-//	DRAW_FLUID_BUOYANCY,
-	DRAW_FLUID_OBSTACLE,
-//	DRAW_FLOW_MASK,
-//	DRAW_OPTICAL_FLOW,
-	DRAW_SOURCE,
-	DRAW_MOUSE
-};
+//using namespace flowTools;
+//
+//enum drawModeEnum{
+//	DRAW_NOTHING = 0,
+//	DRAW_COMPOSITE,
+////	DRAW_FLUID_DENSITY,
+//	DRAW_PARTICLES,
+////	DRAW_VELDOTS,
+//	DRAW_FLUID_FIELDS,
+////	DRAW_FLUID_VELOCITY,
+////	DRAW_FLUID_PRESSURE,
+////	DRAW_FLUID_TEMPERATURE,
+////	DRAW_FLUID_DIVERGENCE,
+////	DRAW_FLUID_VORTICITY,
+////	DRAW_FLUID_BUOYANCY,
+//	DRAW_FLUID_OBSTACLE,
+////	DRAW_FLOW_MASK,
+////	DRAW_OPTICAL_FLOW,
+//	DRAW_SOURCE,
+//	DRAW_MOUSE
+//};
 
 class ofApp : public ofBaseApp,public ofxMidiListener {
 
@@ -86,25 +87,25 @@ public:
 	int					drawWidth;
 	int					drawHeight;
 	
-	ftOpticalFlow		opticalFlow;
-	ftVelocityMask		velocityMask;
-	ftFluidSimulation	fluidSimulation;
-	ftParticleFlow		particleFlow;
-//	ftVelocitySpheres	velocityDots;
-	
-	ofImage				flowToolsLogoImage;
-	bool				showLogo;
-	
-	// MouseDraw
-//	ftDrawMouseForces	mouseForces;
-	
-	// Visualisations
-	ofParameterGroup	visualizeParameters;
-	ftDisplayScalar		displayScalar;
-	ftVelocityField		velocityField;
-	ftTemperatureField	temperatureField;
-	ftPressureField		pressureField;
-	ftVTField			velocityTemperatureField;
+//	ftOpticalFlow		opticalFlow;
+//	ftVelocityMask		velocityMask;
+//	ftFluidSimulation	fluidSimulation;
+//	ftParticleFlow		particleFlow;
+////	ftVelocitySpheres	velocityDots;
+//
+//	ofImage				flowToolsLogoImage;
+//	bool				showLogo;
+//
+//	// MouseDraw
+////	ftDrawMouseForces	mouseForces;
+//
+//	// Visualisations
+//	ofParameterGroup	visualizeParameters;
+//	ftDisplayScalar		displayScalar;
+//	ftVelocityField		velocityField;
+//	ftTemperatureField	temperatureField;
+//	ftPressureField		pressureField;
+//	ftVTField			velocityTemperatureField;
 	
 //	ofParameter<bool>	showScalar;
 //	ofParameter<bool>	showField;
@@ -164,9 +165,9 @@ public:
 	int					fboForFluidH;
 	
 	// obstacle fbo
-	ofFbo				obstacleFbo;
-	int					obstacleFboWidth;
-	int					obstacleFboHeight;
+	ofFbo				fboForObstacle;
+	int					fboForObstacleW;
+	int					fboForObstacleH;
 	
 	
 	// local video player
@@ -174,12 +175,12 @@ public:
 	
 
 	
-	void				drawComposite()			{ drawComposite(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
-	void				drawComposite(int _x, int _y, int _width, int _height);
-	void				drawParticles()			{ drawParticles(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
-	void				drawParticles(int _x, int _y, int _width, int _height);
-	void				drawFluidFields()		{ drawFluidFields(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
-	void				drawFluidFields(int _x, int _y, int _width, int _height);
+//	void				drawComposite()			{ drawComposite(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
+//	void				drawComposite(int _x, int _y, int _width, int _height);
+//	void				drawParticles()			{ drawParticles(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
+//	void				drawParticles(int _x, int _y, int _width, int _height);
+//	void				drawFluidFields()		{ drawFluidFields(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
+//	void				drawFluidFields(int _x, int _y, int _width, int _height);
 	//	void				drawFluidDensity()		{ drawFluidDensity(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	//	void				drawFluidDensity(int _x, int _y, int _width, int _height);
 	//	void				drawFluidVelocity()		{ drawFluidVelocity(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
@@ -194,14 +195,14 @@ public:
 	//	void				drawFluidVorticity(int _x, int _y, int _width, int _height);
 	//	void				drawFluidBuoyance()		{ drawFluidBuoyance(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	//	void				drawFluidBuoyance(int _x, int _y, int _width, int _height);
-	void				drawFluidObstacle()		{ drawFluidObstacle(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
-	void				drawFluidObstacle(int _x, int _y, int _width, int _height);
+//	void				drawFluidObstacle()		{ drawFluidObstacle(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
+//	void				drawFluidObstacle(int _x, int _y, int _width, int _height);
 	//	void				drawMask()				{ drawMask(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	//	void				drawMask(int _x, int _y, int _width, int _height);
 	//	void				drawOpticalFlow()		{ drawOpticalFlow(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	//	void				drawOpticalFlow(int _x, int _y, int _width, int _height);
-	void				drawSource()			{ drawSource(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
-	void				drawSource(int _x, int _y, int _width, int _height);
+//	void				drawSource()			{ drawSource(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
+//	void				drawSource(int _x, int _y, int _width, int _height);
 	//	void				drawMouseForces()		{ drawMouseForces(0, 0, ofGetWindowWidth(), ofGetWindowHeight()); }
 	//	void				drawMouseForces(int _x, int _y, int _width, int _height);
 	

@@ -14,12 +14,32 @@
 
 using namespace flowTools;
 
+enum drawModeEnum{
+	DRAW_NOTHING = 0,
+	DRAW_COMPOSITE,
+	//	DRAW_FLUID_DENSITY,
+	DRAW_PARTICLES,
+	//	DRAW_VELDOTS,
+	DRAW_FLUID_FIELDS,
+	//	DRAW_FLUID_VELOCITY,
+	//	DRAW_FLUID_PRESSURE,
+	//	DRAW_FLUID_TEMPERATURE,
+	//	DRAW_FLUID_DIVERGENCE,
+	//	DRAW_FLUID_VORTICITY,
+	//	DRAW_FLUID_BUOYANCY,
+	DRAW_FLUID_OBSTACLE,
+	//	DRAW_FLOW_MASK,
+	//	DRAW_OPTICAL_FLOW,
+	DRAW_SOURCE,
+	DRAW_MOUSE // not use yet ================  TODO
+};
+
 class MyFlowTools {
 public:
 	MyFlowTools();
 	~MyFlowTools();
 	void setup(int _w,int _h,float _ratio);
-	void update();
+	void update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP);
 	void draw();
 	void exit();
 	
@@ -59,6 +79,7 @@ public:
 	void setFlowToDrawRatio(float _ratio);
 	float getFlowToDrawRatio();
 	
+	
 	ftOpticalFlow		opticalFlow;
 	ftVelocityMask		velocityMask;
 	ftFluidSimulation	fluidSimulation;
@@ -68,9 +89,10 @@ public:
 	ftPressureField		pressureField;
 	ftVTField			velocityTemperatureField;
 
-	ftFbo				cameraFbo;
-	ofFbo				fboForFluid;
-	ofFbo				obstacleFbo;
+//	// not sure if need this in class
+//	ftFbo				cameraFbo;
+//	ofFbo				fboForFluid;
+//	ofFbo				fboForObstacle;
 	int 				drawMode;
 	
 private:
