@@ -44,6 +44,7 @@ void MyFlowTools::setup(int _w,int _h,float _ratio){
 	
 	
 	drawMode = 1; // default draw composite
+	setupGui();
 	
 }
 
@@ -131,10 +132,94 @@ void MyFlowTools::draw(){
 			//			case DRAW_VELDOTS: drawVelocityDots(); break;
 	}
 	
+	
 }
 
 void MyFlowTools::exit(){
 	
+}
+
+
+void MyFlowTools::setupGui() {
+	
+	gui.setup("settings");
+	gui.setDefaultBackgroundColor(ofColor(0, 0, 0, 127));
+	gui.setDefaultFillColor(ofColor(160, 160, 160, 160));
+	
+	gui.add(drawMode.set("draw mode", DRAW_NOTHING, DRAW_NOTHING, DRAW_MOUSE));
+	
+	drawMode.addListener(this,&MyFlowTools::drawModeSetName);
+	gui.add(drawName.set("MODE", "draw name"));
+	
+	
+	int guiColorSwitch = 0;
+	ofColor guiHeaderColor[2];
+	guiHeaderColor[0].set(160, 160, 80, 200);
+	guiHeaderColor[1].set(80, 160, 160, 200);
+	ofColor guiFillColor[2];
+	guiFillColor[0].set(160, 160, 80, 200);
+	guiFillColor[1].set(80, 160, 160, 200);
+	
+	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+	guiColorSwitch = 1 - guiColorSwitch;
+	//	gui.add(opticalFlow.parameters);
+	gui.add(opticalFlow.parameters);
+	
+	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+	guiColorSwitch = 1 - guiColorSwitch;
+	gui.add(velocityMask.parameters);
+	
+	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+	guiColorSwitch = 1 - guiColorSwitch;
+	gui.add(fluidSimulation.parameters);
+	
+	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
+	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
+	guiColorSwitch = 1 - guiColorSwitch;
+	gui.add(particleFlow.parameters);
+	
+	// set self setting files name by ofApp ===============  TODO
+//	if (!ofFile("settings.xml"))
+//		gui.saveToFile("settings.xml");
+//
+//	gui.loadFromFile("settings.xml");
+//
+	gui.minimizeAll();
+	
+	
+}
+
+void MyFlowTools::drawGui() {
+	
+	ofPushStyle();
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	gui.draw();
+	ofPopStyle();
+}
+
+void MyFlowTools::drawModeSetName(int &_value) {
+	switch(_value) {
+		case DRAW_NOTHING:			drawName.set("Draw Nothing");		break;
+		case DRAW_COMPOSITE:		drawName.set("Composite"); 			break;
+		case DRAW_PARTICLES:		drawName.set("Particles"); 			break;
+		case DRAW_FLUID_FIELDS:		drawName.set("Fluid Fields"); 		break;
+			//		case DRAW_FLUID_DENSITY:	drawName.set("Fluid Density  "); break;
+			//		case DRAW_FLUID_VELOCITY:	drawName.set("Fluid Velocity (3)"); break;
+			//		case DRAW_FLUID_PRESSURE:	drawName.set("Fluid Pressure (4)"); break;
+			//		case DRAW_FLUID_TEMPERATURE:drawName.set("Fld Temperature(5)"); break;
+			//		case DRAW_FLUID_DIVERGENCE: drawName.set("Fld Divergence "); break;
+			//		case DRAW_FLUID_VORTICITY:	drawName.set("Fluid Vorticity"); break;
+			//		case DRAW_FLUID_BUOYANCY:	drawName.set("Fluid Buoyancy "); break;
+		case DRAW_FLUID_OBSTACLE:	drawName.set("Fluid Obstacle"); 	break;
+			//		case DRAW_OPTICAL_FLOW:		drawName.set("Optical Flow   (6)"); break;
+			//		case DRAW_FLOW_MASK:		drawName.set("Flow Mask      (7)"); break;
+		case DRAW_SOURCE:			drawName.set("Source"); 			break;
+			//		case DRAW_MOUSE:			drawName.set("Left Mouse     (8)"); break;
+			//		case DRAW_VELDOTS:			drawName.set("VelDots        (0)"); break;
+	}
 }
 
 void MyFlowTools::setFlowToDrawRatio(float _ratio){

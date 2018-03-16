@@ -61,9 +61,6 @@ void ofApp::setup(){
 	// obstacle fbo
 	fboForObstacle.allocate(drawWidth, drawHeight);
 	
-	// GUI
-	setupGui();
-	
 	lastTime = ofGetElapsedTimef();
 	
 	// syphon
@@ -91,11 +88,14 @@ void ofApp::setup(){
 //
 	
 	
+	// GUI
+	setupGui();
 	
 	
 	// int MyFLowTools
 	myFlowTools1.setup(drawWidth, drawHeight, ratio);
-	
+	myFlowTools2.setup(drawWidth, drawHeight, ratio);
+
 }
 
 //--------------------------------------------------------------
@@ -106,55 +106,9 @@ void ofApp::setupGui() {
 	gui.setDefaultFillColor(ofColor(160, 160, 160, 160));
 	gui.add(guiFPS.set("average FPS", 0, 0, 60));
 	gui.add(guiMinFPS.set("minimum FPS", 0, 0, 60));
-//	gui.add(doFullScreen.set("fullscreen (F)", false));
-	doFullScreen.addListener(this, &ofApp::setFullScreen);
 //	gui.add(toggleGuiDraw.set("show gui (G)", false));
-	gui.add(doFlipCamera.set("flip camera", true));
-	gui.add(doDrawCamBackground.set("draw camera (C)", true));
-	gui.add(drawMode.set("draw mode", DRAW_COMPOSITE, DRAW_COMPOSITE, DRAW_MOUSE));
-
-	drawMode.addListener(this, &ofApp::drawModeSetName);
-	gui.add(drawName.set("MODE", "draw name"));
-	
-	
-	int guiColorSwitch = 0;
-	ofColor guiHeaderColor[2];
-	guiHeaderColor[0].set(160, 160, 80, 200);
-	guiHeaderColor[1].set(80, 160, 160, 200);
-	ofColor guiFillColor[2];
-	guiFillColor[0].set(160, 160, 80, 200);
-	guiFillColor[1].set(80, 160, 160, 200);
-	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
-//	gui.add(opticalFlow.parameters);
-	gui.add(myFlowTools1.opticalFlow.parameters);
-
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
-	gui.add(myFlowTools1.velocityMask.parameters);
-	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
-	gui.add(myFlowTools1.fluidSimulation.parameters);
-	
-	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
-	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
-	guiColorSwitch = 1 - guiColorSwitch;
-	gui.add(myFlowTools1.particleFlow.parameters);
-	
-
-	if (!ofFile("settings.xml"))
-		gui.saveToFile("settings.xml");
-	
-	gui.loadFromFile("settings.xml");
-	
-	gui.minimizeAll();
-	
-	toggleGuiDraw = true;
+//	gui.add(doFlipCamera.set("flip camera", true));
+//	gui.add(doDrawCamBackground.set("draw camera (C)", true));
 	
 }
 
@@ -195,7 +149,7 @@ void ofApp::update(){
 	
 	deltaTime = ofGetElapsedTimef() - lastTime;
 	lastTime = ofGetElapsedTimef();
-	simpleCam.update();
+//	simpleCam.update();
 //
 //	if (simpleCam.isFrameNew()) {
 //		ofPushStyle();
@@ -256,7 +210,8 @@ void ofApp::update(){
 
 	// MyFlowTools update
 	myFlowTools1.update(&fboForFluid, &fboForObstacle);
-	
+	myFlowTools2.update(&fboForFluid, &fboForObstacle);
+
 }
 //--------------------------------------------------------------
 
@@ -330,44 +285,14 @@ void ofApp::keyPressed(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::drawModeSetName(int &_value) {
-	switch(_value) {
-		case DRAW_COMPOSITE:		drawName.set("Composite      (1)"); break;
-		case DRAW_PARTICLES:		drawName.set("Particles      "); break;
-		case DRAW_FLUID_FIELDS:		drawName.set("Fluid Fields   (2)"); break;
-//		case DRAW_FLUID_DENSITY:	drawName.set("Fluid Density  "); break;
-//		case DRAW_FLUID_VELOCITY:	drawName.set("Fluid Velocity (3)"); break;
-//		case DRAW_FLUID_PRESSURE:	drawName.set("Fluid Pressure (4)"); break;
-//		case DRAW_FLUID_TEMPERATURE:drawName.set("Fld Temperature(5)"); break;
-//		case DRAW_FLUID_DIVERGENCE: drawName.set("Fld Divergence "); break;
-//		case DRAW_FLUID_VORTICITY:	drawName.set("Fluid Vorticity"); break;
-//		case DRAW_FLUID_BUOYANCY:	drawName.set("Fluid Buoyancy "); break;
-		case DRAW_FLUID_OBSTACLE:	drawName.set("Fluid Obstacle "); break;
-//		case DRAW_OPTICAL_FLOW:		drawName.set("Optical Flow   (6)"); break;
-//		case DRAW_FLOW_MASK:		drawName.set("Flow Mask      (7)"); break;
-		case DRAW_SOURCE:			drawName.set("Source         "); break;
-//		case DRAW_MOUSE:			drawName.set("Left Mouse     (8)"); break;
-//		case DRAW_VELDOTS:			drawName.set("VelDots        (0)"); break;
-	}
-}
-
-//--------------------------------------------------------------
 void ofApp::draw(){
 	syphonFbo.begin();
 
 	ofClear(0,0);
 	
-	if (!toggleGuiDraw) {
-		ofHideCursor();
-//		drawComposite();
-		
-	}
-	else {
-		ofShowCursor();
-		
-		myFlowTools1.draw();
-		
-	}
+	myFlowTools1.draw();
+	myFlowTools2.draw();
+
 	syphonFbo.end();
 	mainOutputSyphonServer.publishTexture(&syphonFbo.getTexture());
 
@@ -400,17 +325,10 @@ void ofApp::drawGui() {
 	
 	guiMinFPS.set(1.0 / longestTime);
 	
-	
-	ofPushStyle();
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	gui.draw();
 	
-	// HACK TO COMPENSATE FOR DISSAPEARING MOUSE
-	ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
-	ofDrawCircle(ofGetMouseX(), ofGetMouseY(), ofGetWindowWidth() / 300.0);
-	ofEnableBlendMode(OF_BLENDMODE_ADD);
-	ofDrawCircle(ofGetMouseX(), ofGetMouseY(), ofGetWindowWidth() / 600.0);
-	ofPopStyle();
+	myFlowTools1.drawGui();
+	myFlowTools2.drawGui();
 }
 
 //--------------------------------------------------------------
