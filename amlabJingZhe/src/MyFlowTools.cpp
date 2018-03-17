@@ -15,6 +15,7 @@ MyFlowTools::MyFlowTools(){
 MyFlowTools::~MyFlowTools(){
 	
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::setup(int _w,int _h,float _ratio){
 	drawWidth = _w;
@@ -43,12 +44,14 @@ void MyFlowTools::setup(int _w,int _h,float _ratio){
 	//	mouseForces.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
 	
-	drawMode = 1; // default draw composite
 	setupGui();
 	
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP){
+	
+	
 	opticalFlow.setSource(_fboForFluidP->getTexture());
 	opticalFlow.update();
 	velocityMask.setDensity(_fboForFluidP->getTexture());
@@ -79,40 +82,12 @@ void MyFlowTools::update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP){
 	}
 	particleFlow.update();
 	
-	
-	//	backup
-	//	mouseForces.update(deltaTime);
-	
-	//	for (int i=0; i<mouseForces.getNumForces(); i++) {
-	//		if (mouseForces.didChange(i)) {
-	//			switch (mouseForces.getType(i)) {
-	//				case FT_DENSITY:
-	//					fluidSimulation.addDensity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-	//					break;
-	//				case FT_VELOCITY:
-	//					fluidSimulation.addVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-	//					particleFlow.addFlowVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-	//					break;
-	//				case FT_TEMPERATURE:
-	//					fluidSimulation.addTemperature(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-	//					break;
-	//				case FT_PRESSURE:
-	//					fluidSimulation.addPressure(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
-	//					break;
-	//				case FT_OBSTACLE:
-	//					fluidSimulation.addTempObstacle(mouseForces.getTextureReference(i));
-	//				default:
-	//					break;
-	//			}
-	//		}
-	//	}
-	
-	
 }
 
 
-
+//--------------------------------------------------------------
 void MyFlowTools::draw(){
+	
 	switch(drawMode) {
 		case DRAW_COMPOSITE: drawComposite(); break;
 		case DRAW_PARTICLES: drawParticles(); break;
@@ -134,11 +109,13 @@ void MyFlowTools::draw(){
 	
 	
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::exit(){
 	
 }
 
+//--------------------------------------------------------------
 
 void MyFlowTools::setupGui() {
 	
@@ -182,15 +159,16 @@ void MyFlowTools::setupGui() {
 	gui.add(particleFlow.parameters);
 	
 	// set self setting files name by ofApp ===============  TODO
-//	if (!ofFile("settings.xml"))
-//		gui.saveToFile("settings.xml");
-//
-//	gui.loadFromFile("settings.xml");
-//
+	//	if (!ofFile("settings.xml"))
+	//		gui.saveToFile("settings.xml");
+	//
+	//	gui.loadFromFile("settings.xml");
+	//
 	gui.minimizeAll();
 	
 	
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::drawGui() {
 	
@@ -199,6 +177,7 @@ void MyFlowTools::drawGui() {
 	gui.draw();
 	ofPopStyle();
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::drawModeSetName(int &_value) {
 	switch(_value) {
@@ -221,39 +200,51 @@ void MyFlowTools::drawModeSetName(int &_value) {
 			//		case DRAW_VELDOTS:			drawName.set("VelDots        (0)"); break;
 	}
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::setFlowToDrawRatio(float _ratio){
 	ratio = _ratio;
 	flowWidth = drawWidth / ratio;
 	flowHeight = drawHeight / ratio;
 }
+//--------------------------------------------------------------
+
 float MyFlowTools::getFlowToDrawRatio(){
 	return ratio;
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::setDrawWidth(int _w){
 	drawWidth = _w;
 	flowWidth = drawWidth / ratio;
 }
+//--------------------------------------------------------------
+
 int MyFlowTools::getDrawWidth(){
 	return drawWidth;
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::setDrawHeight(int _h){
 	drawHeight = _h;
 	flowHeight = drawHeight / ratio;
 }
+//--------------------------------------------------------------
+
 int MyFlowTools::getDrawHeight(){
 	return drawHeight;
 }
+//--------------------------------------------------------------
 
 int MyFlowTools::getFlowWidth(){
 	return flowWidth;
 }
+//--------------------------------------------------------------
 
 int MyFlowTools::getFlowHeight(){
 	return flowHeight;
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::drawComposite(int _x, int _y, int _width, int _height){
 	ofPushStyle();
@@ -266,6 +257,7 @@ void MyFlowTools::drawComposite(int _x, int _y, int _width, int _height){
 		particleFlow.draw(_x, _y, _width, _height);
 	ofPopStyle();
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::drawParticles(int _x, int _y, int _width, int _height){
 	ofPushStyle();
@@ -274,6 +266,7 @@ void MyFlowTools::drawParticles(int _x, int _y, int _width, int _height){
 		particleFlow.draw(_x, _y, _width, _height);
 	ofPopStyle();
 }
+//--------------------------------------------------------------
 
 void MyFlowTools::drawFluidFields(int _x, int _y, int _width, int _height){
 	ofPushStyle();
@@ -289,6 +282,7 @@ void MyFlowTools::drawFluidFields(int _x, int _y, int _width, int _height){
 	ofPopStyle();
 }
 
+//--------------------------------------------------------------
 
 void MyFlowTools::drawFluidObstacle(int _x, int _y, int _width, int _height) {
 	ofPushStyle();
@@ -300,11 +294,38 @@ void MyFlowTools::drawFluidObstacle(int _x, int _y, int _width, int _height) {
 void MyFlowTools::drawSource(int _x, int _y, int _width, int _height){
 	ofPushStyle();
 	ofEnableBlendMode(OF_BLENDMODE_DISABLED);
-//	cameraFbo.draw(_x, _y, _width, _height);  ====== TODO
+	//	cameraFbo.draw(_x, _y, _width, _height);  ====== TODO
 	ofPopStyle();
 }
 
+//-==================================================
+//==================================================
+//	backup from update();
+//	mouseForces.update(deltaTime);
 
+//	for (int i=0; i<mouseForces.getNumForces(); i++) {
+//		if (mouseForces.didChange(i)) {
+//			switch (mouseForces.getType(i)) {
+//				case FT_DENSITY:
+//					fluidSimulation.addDensity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+//					break;
+//				case FT_VELOCITY:
+//					fluidSimulation.addVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+//					particleFlow.addFlowVelocity(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+//					break;
+//				case FT_TEMPERATURE:
+//					fluidSimulation.addTemperature(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+//					break;
+//				case FT_PRESSURE:
+//					fluidSimulation.addPressure(mouseForces.getTextureReference(i), mouseForces.getStrength(i));
+//					break;
+//				case FT_OBSTACLE:
+//					fluidSimulation.addTempObstacle(mouseForces.getTextureReference(i));
+//				default:
+//					break;
+//			}
+//		}
+//	}
 
 //--------------------------------------------------------------
 //void ofApp::drawComposite(int _x, int _y, int _width, int _height) {

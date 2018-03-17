@@ -95,7 +95,7 @@ public:
 	ofxPanel			gui;
 	void 				setupGui();
 	void 				drawGui();
-	void				drawModeSetName(int& _value) ;
+	void				drawModeSetName(int & _value);
 	ofParameter<string> drawName;
 
 	

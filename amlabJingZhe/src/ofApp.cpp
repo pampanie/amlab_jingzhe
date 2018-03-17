@@ -203,7 +203,7 @@ void ofApp::update(){
 	fboForObstacle.begin();
 //	ofSetColor(255, 255, 255);
 //	ofDrawRectangle(100, 100, 600, 200);
-	grayKinect1Image.draw(0, 0, drawWidth,drawHeight);
+//	grayKinect1Image.draw(0, 0, drawWidth,drawHeight);
 
 	fboForObstacle.end();
 	
