@@ -51,7 +51,6 @@ void MyFlowTools::setup(int _w,int _h,float _ratio){
 
 void MyFlowTools::update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP){
 	
-	
 	opticalFlow.setSource(_fboForFluidP->getTexture());
 	opticalFlow.update();
 	velocityMask.setDensity(_fboForFluidP->getTexture());
@@ -81,6 +80,7 @@ void MyFlowTools::update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP){
 		particleFlow.setObstacle(fluidSimulation.getObstacle());
 	}
 	particleFlow.update();
+	
 	
 }
 
@@ -140,13 +140,12 @@ void MyFlowTools::setupGui() {
 	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
 	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
 	guiColorSwitch = 1 - guiColorSwitch;
-	//	gui.add(opticalFlow.parameters);
-	gui.add(opticalFlow.parameters);
+	gui.add(particleFlow.parameters);
 	
 	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
 	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
 	guiColorSwitch = 1 - guiColorSwitch;
-	gui.add(velocityMask.parameters);
+	gui.add(opticalFlow.parameters);
 	
 	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
 	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
@@ -156,7 +155,8 @@ void MyFlowTools::setupGui() {
 	gui.setDefaultHeaderBackgroundColor(guiHeaderColor[guiColorSwitch]);
 	gui.setDefaultFillColor(guiFillColor[guiColorSwitch]);
 	guiColorSwitch = 1 - guiColorSwitch;
-	gui.add(particleFlow.parameters);
+	gui.add(velocityMask.parameters);
+	
 	
 	// set self setting files name by ofApp ===============  TODO
 	//	if (!ofFile("settings.xml"))
@@ -200,6 +200,18 @@ void MyFlowTools::drawModeSetName(int &_value) {
 			//		case DRAW_VELDOTS:			drawName.set("VelDots        (0)"); break;
 	}
 }
+
+
+//--------------------------------------------------------------
+
+void MyFlowTools::setParticleColor(ofColor _color){
+	particleFlow.setParticleColor(_color);
+}
+//--------------------------------------------------------------
+ofColor MyFlowTools::getParticleColor(){
+	return particleFlow.getParticleColor();
+}
+
 //--------------------------------------------------------------
 
 void MyFlowTools::setFlowToDrawRatio(float _ratio){

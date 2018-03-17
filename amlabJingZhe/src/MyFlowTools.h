@@ -45,6 +45,7 @@ public:
 	void exit();
 	
 	void setParticleColor(ofColor _color);
+	ofColor getParticleColor();
 	void drawComposite(){
 		drawComposite(0,0,drawWidth,drawHeight);
 	};
@@ -94,6 +95,7 @@ public:
 	ofParameter<int>	drawMode;
 	ofxPanel			gui;
 	void 				setupGui();
+	void				updateGui();
 	void 				drawGui();
 	void				drawModeSetName(int & _value);
 	ofParameter<string> drawName;
