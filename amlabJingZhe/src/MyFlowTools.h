@@ -39,7 +39,7 @@ class MyFlowTools {
 public:
 	MyFlowTools();
 	~MyFlowTools();
-	void setup(int _w,int _h,float _ratio);
+	void setup(int _w,int _h,float _ratio,string settingFileName);
 	void update(ofFbo *_fboForFluidP,ofFbo *_obstacleFboP);
 	void draw();
 	void exit();
@@ -99,6 +99,7 @@ public:
 	void 				drawGui();
 	void				drawModeSetName(int & _value);
 	ofParameter<string> drawName;
+	string				settingFileName;
 
 	
 	

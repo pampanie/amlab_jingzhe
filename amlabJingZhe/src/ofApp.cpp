@@ -93,8 +93,8 @@ void ofApp::setup(){
 	
 	
 	// int MyFLowTools
-	myFlowTools1.setup(drawWidth, drawHeight, ratio);
-	myFlowTools2.setup(drawWidth, drawHeight, ratio);
+	myFlowTools1.setup(drawWidth, drawHeight, ratio,"setting1.xml");
+	myFlowTools2.setup(drawWidth, drawHeight, ratio,"setting2.xml");
 
 }
 
@@ -109,6 +109,15 @@ void ofApp::setupGui() {
 //	gui.add(toggleGuiDraw.set("show gui (G)", false));
 //	gui.add(doFlipCamera.set("flip camera", true));
 //	gui.add(doDrawCamBackground.set("draw camera (C)", true));
+	
+	// seva setting with give name
+	if (!ofFile("settings.xml"))
+		gui.saveToFile("settings.xml");
+	
+	gui.loadFromFile("settings.xml");
+	
+	
+	
 	
 }
 

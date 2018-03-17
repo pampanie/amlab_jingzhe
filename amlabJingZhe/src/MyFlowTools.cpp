@@ -17,7 +17,7 @@ MyFlowTools::~MyFlowTools(){
 }
 //--------------------------------------------------------------
 
-void MyFlowTools::setup(int _w,int _h,float _ratio){
+void MyFlowTools::setup(int _w,int _h,float _ratio,string _settingFileName){
 	drawWidth = _w;
 	drawHeight = _h;
 	flowWidth = _w / _ratio;
@@ -43,7 +43,7 @@ void MyFlowTools::setup(int _w,int _h,float _ratio){
 	// MOUSE DRAW
 	//	mouseForces.setup(flowWidth, flowHeight, drawWidth, drawHeight);
 	
-	
+	settingFileName = _settingFileName;
 	setupGui();
 	
 }
@@ -112,6 +112,8 @@ void MyFlowTools::draw(){
 //--------------------------------------------------------------
 
 void MyFlowTools::exit(){
+	if (!ofFile(settingFileName))
+		gui.saveToFile(settingFileName);
 	
 }
 
@@ -158,12 +160,11 @@ void MyFlowTools::setupGui() {
 	gui.add(velocityMask.parameters);
 	
 	
-	// set self setting files name by ofApp ===============  TODO
-	//	if (!ofFile("settings.xml"))
-	//		gui.saveToFile("settings.xml");
-	//
-	//	gui.loadFromFile("settings.xml");
-	//
+	if (!ofFile(settingFileName))
+		gui.saveToFile(settingFileName);
+
+	gui.loadFromFile(settingFileName);
+
 	gui.minimizeAll();
 	
 	
