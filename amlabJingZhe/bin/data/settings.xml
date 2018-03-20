@@ -2,11 +2,11 @@
 	<average_FPS>0</average_FPS>
 	<minimum_FPS>0</minimum_FPS>
 <group/>
-	<draw_mode>0</draw_mode>
-	<MODE>draw name</MODE>
+	<draw_mode>2</draw_mode>
+	<MODE>Particles</MODE>
 	<particle_flow>
 		<active>1</active>
-		<particle_color>0, 255, 0, 255</particle_color>
+		<particle_color>255, 0, 0, 255</particle_color>
 		<speed>20</speed>
 		<cell_size>1.25</cell_size>
 		<birth_chance>0.5</birth_chance>
@@ -18,7 +18,7 @@
 		<size>2</size>
 		<size_spread>0.75</size_spread>
 		<twinkle_speed>11</twinkle_speed>
-		<gravity>0, 9.80665</gravity>
+		<gravity>0, -10</gravity>
 	</particle_flow>
 	<optical_flow>
 		<strength>10</strength>

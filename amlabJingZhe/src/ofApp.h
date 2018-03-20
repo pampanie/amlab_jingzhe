@@ -112,6 +112,9 @@ public:
 	ofFbo				syphonFbo;
 	ofxSyphonClient 	syphonClient;
 
+	ofxSyphonClient		animationSyphonClient;
+	bool				useAnimateClient = false;
+	
 	// midi
 	ofxMidiIn 			midiIn;
 	void 				newMidiMessage(ofxMidiMessage& eventArgs);

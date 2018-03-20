@@ -52,12 +52,12 @@ void ofApp::setup(){
 //	cameraFbo.black();
 	
 	// cameara fbo for fluid
-	camFboForFluid.allocate(640, 480);
+	camFboForFluid.allocate(fboForFluidW, fboForFluidH);
 	
 	// video fbo for fuild
 	// fixed w h for test only ==============  TODO
-	videoFboForFluid.allocate(640,480);
-	fboForFluid.allocate(640, 480);
+	videoFboForFluid.allocate(fboForFluidW,fboForFluidH);
+	fboForFluid.allocate(fboForFluidW, fboForFluidH);
 	// obstacle fbo
 	fboForObstacle.allocate(drawWidth, drawHeight);
 	
@@ -71,9 +71,11 @@ void ofApp::setup(){
 	mainOutputSyphonServer.setName("A.M Lab -- Jing Zhe");
 
 	syphonClient.setup();
-	syphonClient.setServerName("Video");
-	
-	
+	syphonClient.setServerName("Composition");
+
+
+	animationSyphonClient.setup();
+	animationSyphonClient.setServerName("AnimateSyphonServer");
 	
 	// midi
 //	midiIn.listPorts(); // via instance
@@ -93,8 +95,8 @@ void ofApp::setup(){
 	
 	
 	// int MyFLowTools
-	myFlowTools1.setup(drawWidth, drawHeight, ratio,"setting1.xml");
-	myFlowTools2.setup(drawWidth, drawHeight, ratio,"setting2.xml");
+	myFlowTools1.setup(drawWidth, drawHeight, ratio,"id1");
+	myFlowTools2.setup(drawWidth, drawHeight, ratio,"id2");
 
 }
 
@@ -200,10 +202,13 @@ void ofApp::update(){
 //	velocityMask.update();
 	
 	
-	
 	// set source from syphon client ===============================  TODO
 	fboForFluid.begin();
-	syphonClient.draw(0,0, 640, 360);
+
+	syphonClient.draw(0,0, fboForFluidW, fboForFluidH);
+
+//	animationSyphonClient.draw(0, 0, fboForFluidW, fboForFluidH);
+
 	fboForFluid.end();
 	
 	
@@ -237,6 +242,10 @@ void ofApp::exit() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	switch (key) {
+		case 'S':
+		case 's':
+			useAnimateClient = !useAnimateClient;
+			break;
 		case 'G':
 		case 'g': toggleGuiDraw = !toggleGuiDraw; break;
 		case 'f':
@@ -307,13 +316,15 @@ void ofApp::draw(){
 
 	drawGui();
 	
+	
 	// test obstacle fbo
 //	obstacleFbo.draw(0, 0);
 	
 	// test syphon client
 //	syphonClient.draw(0,0);
 	
-	
+	// test animate syphon client
+//	animationSyphonClient.getTexture().draw(0, 0);
 }
 
 //--------------------------------------------------------------

@@ -99,7 +99,7 @@ public:
 	void 				drawGui();
 	void				drawModeSetName(int & _value);
 	ofParameter<string> drawName;
-	string				settingFileName;
+	string				myID;
 
 	
 	
