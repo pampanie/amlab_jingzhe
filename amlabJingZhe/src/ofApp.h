@@ -10,6 +10,9 @@
 #include "ofxCv.h"
 #include "MyFlowTools.h"
 
+using namespace ofxCv;
+using namespace cv;
+
 //using namespace flowTools;
 //
 //enum drawModeEnum{
@@ -77,7 +80,7 @@ public:
 	bool				didCamUpdate;
 	ftFbo				cameraFbo;
 	ofParameter<bool>	doFlipCamera;
-	
+	ofImage				cameraFrameImg;
 	// Time
 	float				lastTime;
 	float				deltaTime;
@@ -102,8 +105,12 @@ public:
 	
 	// DRAW
 	ofParameter<bool>	doDrawCamBackground;
-
 	
+	ofxCv::ContourFinder contourFinder;
+	
+	
+	ofParameter<float> minArea, maxArea, threshold;
+	ofParameter<bool> holes;
 	
 	// syphon
 	ofxSyphonServer 	mainOutputSyphonServer;
